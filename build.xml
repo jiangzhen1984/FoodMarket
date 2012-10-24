@@ -1,0 +1,71 @@
+<?xml version="1.0"  encoding="UTF-8" ?>
+<project basedir="." default="deploy">
+
+	<property environment="env" />
+	<property name="project.dir" value="${basedir}" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="java.source.dir" value="${basedir}/src" />
+	<property name="deploy.dir" value="/opt/jboss-6.1.0.Final/server/default/deploy" />
+
+
+	<path id="project.lib">
+		<fileset dir="${project.dir}/WebContent/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: clean                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="clean">
+		<delete>
+			<fileset dir="${build.dir}">
+				<include name="*/**" />
+			</fileset>
+		</delete>
+		<mkdir dir="${build.dir}/classes" />
+		<mkdir dir="${build.dir}/deploy" />
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: compile                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="compile" depends="clean">
+		<javac srcdir="${java.source.dir}" destdir="${build.dir}/classes" classpath="project.lib" debug="on">
+			<classpath refid="project.lib">
+			</classpath>
+		</javac>
+		<copy todir="${build.dir}/classes">
+			<fileset dir="${java.source.dir}">
+				<include name="*.xml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ================================= 
+          target: war              
+         ================================= -->
+	<target name="war" depends="compile" description="description">
+		<war destfile="${build.dir}/deploy/FoodMarket.war" basedir="${project.dir}/WebContent" webxml="${project.dir}/WebContent/WEB-INF/web.xml">
+			<classes dir="${build.dir}/classes/">
+			</classes>
+		</war>
+	</target>
+
+
+
+	<!-- ================================= 
+          target: deploy              
+         ================================= -->
+	<target name="deploy" depends="war" description="deploy war to application server">
+		<copy todir="${deploy.dir}">
+			<fileset dir="${build.dir}/deploy" id="id">
+				<include name="FoodMarket.war" />
+			</fileset>
+
+		</copy>
+	</target>
+
+</project>
