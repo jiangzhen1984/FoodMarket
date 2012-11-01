@@ -5,11 +5,18 @@
 	<property name="project.dir" value="${basedir}" />
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="java.source.dir" value="${basedir}/src" />
+	<property name="jboss.server.dir" value="/opt/jboss-6.1.0.Final" />
 	<property name="deploy.dir" value="/opt/jboss-6.1.0.Final/server/default/deploy" />
 
 
 	<path id="project.lib">
 		<fileset dir="${project.dir}/WebContent/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="j2ee.project.lib">
+		<fileset dir="${jboss.server.dir}/client/">
 			<include name="*.jar" />
 		</fileset>
 	</path>
@@ -35,6 +42,8 @@
 	<target name="compile" depends="clean">
 		<javac srcdir="${java.source.dir}" destdir="${build.dir}/classes" classpath="project.lib" debug="on">
 			<classpath refid="project.lib">
+			</classpath>
+			<classpath refid="j2ee.project.lib">
 			</classpath>
 		</javac>
 		<copy todir="${build.dir}/classes">

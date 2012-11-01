@@ -1,23 +1,25 @@
 package com.foodmarket.service;
 
-import com.foodmarket.dao.IBaseDao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.internal.BootstrapServiceRegistryImpl;
+import org.jboss.logging.Logger;
 
-public abstract class BaseService implements IBaseService {
+public abstract class  BaseService implements IBaseService {
 
     private static SessionFactory sessionFactory;
 
     private static Configuration config;
 
-    protected IBaseDao dao;
+    private static Logger log=Logger.getLogger(BaseService.class);
 
     static {
         config = new Configuration();
+        config.configure(BaseService.class.getResource("../../../hibernate.cfg.xml"));
         sessionFactory = config.buildSessionFactory(new BootstrapServiceRegistryImpl());
+        log.info("======build session factory successfully!");
     }
 
     public Session openSession() {
@@ -32,12 +34,5 @@ public abstract class BaseService implements IBaseService {
 
     }
 
-    public void setDao(IBaseDao dao) {
-        this.dao = dao;
-    }
-
-    public IBaseDao getDao() {
-        return dao;
-    }
 
 }

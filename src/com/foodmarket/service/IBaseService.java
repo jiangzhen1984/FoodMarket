@@ -1,7 +1,5 @@
 package com.foodmarket.service;
 
-import com.foodmarket.dao.IBaseDao;
-
 import org.hibernate.Session;
 
 /**
@@ -17,8 +15,6 @@ public interface IBaseService {
 
     public void setSession(Session session);
 
-    public void setDao(IBaseDao dao);
 
-    public IBaseDao getDao();
 
 }

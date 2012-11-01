@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <!DOCTYPE hibernate-configuration PUBLIC  
 "-//Hibernate/Hibernate Configuration DTD 3.0//EN"  
-"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+"http://www.jboss.org/dtd/hibernate/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
 
     <session-factory>  
   
 <!-- 各属性的配置-->  
-  
-<!—为true表示将Hibernate发送给数据库的sql显示出来 -->
+
 
         <property
             name="show_sql">true</property>  
@@ -48,7 +47,5 @@
         <property
             name="connection.password">root</property>  
   
-<!—映射文件 -->
-
     </session-factory>
 </hibernate-configuration
