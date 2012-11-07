@@ -11,7 +11,7 @@ public interface IBaseService {
 
     public Session openSession();
 
-    public void closeSession(Session session);
+    public void closeSession();
 
     public void setSession(Session session);
 

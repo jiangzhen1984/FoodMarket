@@ -2,32 +2,31 @@ package com.foodmarket.service;
 
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.internal.BootstrapServiceRegistryImpl;
 import org.jboss.logging.Logger;
+
+import com.foodmarket.service.SeviceFactory;
+
 
 public abstract class  BaseService implements IBaseService {
 
-    private static SessionFactory sessionFactory;
+    private static ThreadLocal<Session> session = new ThreadLocal<Session>();
 
-    private static Configuration config;
-
-    private static Logger log=Logger.getLogger(BaseService.class);
-
-    static {
-        config = new Configuration();
-        config.configure(BaseService.class.getResource("../../../hibernate.cfg.xml"));
-        sessionFactory = config.buildSessionFactory(new BootstrapServiceRegistryImpl());
-        log.info("======build session factory successfully!");
-    }
+    private  Logger log = Logger.getLogger(this.getClass());
 
     public Session openSession() {
-        return sessionFactory.openSession();
+        Session sess= SeviceFactory.getSessionFactory().openSession();
+        session.set(sess);
+        return sess;
     }
 
-    public void closeSession(Session session) {
-        session.close();
+
+    public void closeSession() {
+        Session sess =  session.get();
+        if (sess != null) {
+            sess.close();
+        } else {
+            log.warn(" session is not can't find session in thread local:"+ Thread.currentThread());
+        }
     }
 
     public void setSession(Session session) {
